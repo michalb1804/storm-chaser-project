@@ -101,6 +101,14 @@
   color: var(--text-dim);
 }
 
+.productDesc {
+  font-family: var(--sans);
+  font-size: 11px;
+  color: var(--text-dim);
+  font-weight: 300;
+  margin-top: 4px;
+}
+
 /* ── ProductPicker wrapper ───────────────────────────────────────────────── */
 
 .pickerWrap {

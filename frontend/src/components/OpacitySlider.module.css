@@ -1,0 +1,76 @@
+/* components/OpacitySlider.module.css */
+
+.wrap {
+  position: absolute;
+  top: 12px;
+  right: 130px;
+  z-index: 500;
+}
+
+.panel {
+  background: rgba(8, 12, 16, 0.82);
+  border: 1px solid rgba(80, 96, 112, 0.4);
+  border-radius: 4px;
+  padding: 6px 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  backdrop-filter: blur(6px);
+  transition: border-color 0.15s;
+}
+
+.panel:hover {
+  border-color: rgba(0, 229, 160, 0.5);
+}
+
+.label {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.5);
+  letter-spacing: 0.1em;
+  white-space: nowrap;
+}
+
+.slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 80px;
+  height: 3px;
+  border-radius: 2px;
+  background: rgba(255, 255, 255, 0.15);
+  outline: none;
+  cursor: pointer;
+}
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #00e5a0;
+  cursor: pointer;
+  border: 2px solid rgba(0, 0, 0, 0.4);
+  transition: transform 0.1s;
+}
+
+.slider::-webkit-slider-thumb:hover {
+  transform: scale(1.2);
+}
+
+.slider::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #00e5a0;
+  cursor: pointer;
+  border: 2px solid rgba(0, 0, 0, 0.4);
+}
+
+.value {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 11px;
+  color: #00e5a0;
+  letter-spacing: 0.05em;
+  min-width: 32px;
+  text-align: right;
+}

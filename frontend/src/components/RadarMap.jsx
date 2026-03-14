@@ -4,6 +4,7 @@ import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
 import RadarWebGL from './RadarWebGL.jsx'
 import CellOverlay from './CellOverlay.jsx'
+import CoupletOverlay from './CoupletOverlay.jsx'
 
 export default function RadarMap({
   product,
@@ -13,6 +14,11 @@ export default function RadarMap({
   opacity = 1,
   onProjLoad,
   cells,
+  // Velocity Couplet props
+  coupletPoints,
+  coupletResult,
+  coupletActive,
+  onCoupletClear,
 }) {
   const containerRef    = useRef(null)
   const mapRef          = useRef(null)
@@ -79,6 +85,13 @@ export default function RadarMap({
             onProjLoad={onProjLoad}
           />
           <CellOverlay cells={cells} map={mapRef.current} />
+          <CoupletOverlay
+            points={coupletPoints}
+            result={coupletResult}
+            map={mapRef.current}
+            isActive={coupletActive}
+            onClear={onCoupletClear}
+          />
         </>
       )}
     </div>

@@ -7,12 +7,16 @@ import TimeSlider  from './components/TimeSlider.jsx'
 import { useRadarHistory }  from './hooks/useRadarHistory.js'
 import { usePointValue }    from './hooks/useRadar.js'
 import { useCells }         from './hooks/useCells.js'
+import { useVelocityCouplet } from './hooks/useVelocityCouplet.js'
 import ColorLegend from './components/ColorLegend.jsx'
+import OpacitySlider from './components/OpacitySlider.jsx'
+import CoupletButton from './components/CoupletButton.jsx'
 import styles from './App.module.css'
 
 export default function App() {
   const [product, setProduct] = useState('COMPO_CMAX')
   const [radarProj, setRadarProj] = useState(null)
+  const [opacity, setOpacity] = useState(0.85)
 
   const handleProductChange = useCallback((p) => {
     setProduct(p)
@@ -33,9 +37,18 @@ export default function App() {
   const cellData = useCells(product)
   const [showCells, setShowCells] = useState(true)
 
+  // Velocity Couplet hook
+  const couplet = useVelocityCouplet(product, selectedTs)
+
   const handleMapClick = useCallback((lat, lon) => {
+    // Jeśli tryb couplet jest aktywny, dodaj punkt do pomiaru
+    if (couplet.isActive) {
+      couplet.addPoint(lat, lon)
+      return
+    }
+    // W przeciwnym razie standardowe zapytanie o wartość
     queryPoint(lat, lon)
-  }, [queryPoint])
+  }, [queryPoint, couplet])
 
   const topScan    = scans[0] ?? null
   const pseudoMeta = topScan ? {
@@ -88,8 +101,13 @@ export default function App() {
             selectedTs={selectedTs}
             onMapClick={handleMapClick}
             popupContent={popupContent}
+            opacity={opacity}
             onProjLoad={setRadarProj}
             cells={showCells ? cellData.cells : []}
+            coupletPoints={couplet.points}
+            coupletResult={couplet.result}
+            coupletActive={couplet.isActive}
+            onCoupletClear={couplet.clear}
           />
 
           <ColorLegend proj={radarProj} product={product} />
@@ -101,6 +119,8 @@ export default function App() {
             loading={histLoading}
           />
 
+          <OpacitySlider opacity={opacity} onChange={setOpacity} />
+
           <button
             className={styles.cellToggle}
             onClick={() => setShowCells(v => !v)}
@@ -111,6 +131,12 @@ export default function App() {
               KOMÓRKI
             </span>
           </button>
+
+          <CoupletButton
+            isActive={couplet.isActive}
+            onToggle={couplet.toggleActive}
+            disabled={!couplet.isVelocityProduct}
+          />
 
           <div className={styles.watermark}>IMGW-PIB · NOAA GFS</div>
         </div>

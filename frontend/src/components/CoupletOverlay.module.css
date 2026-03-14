@@ -1,0 +1,155 @@
+/* components/CoupletOverlay.module.css */
+
+.resultPanel {
+  position: absolute;
+  bottom: 80px;
+  right: 16px;        /* było: left: 16px */
+  width: 200px;
+  background: rgba(8, 12, 16, 0.92);
+  border: 1px solid rgba(255, 128, 64, 0.25);
+  border-radius: 6px;
+  padding: 10px 12px;
+  z-index: 600;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 12px;
+  color: #c8d8e8;
+  pointer-events: auto;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.title {
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.closeBtn {
+  background: none;
+  border: none;
+  color: #506070;
+  cursor: pointer;
+  font-size: 12px;
+  padding: 0;
+  line-height: 1;
+}
+
+.closeBtn:hover {
+  color: #c8d8e8;
+}
+
+.error {
+  color: #ff6060;
+  font-size: 11px;
+  text-align: center;
+  padding: 8px 0;
+}
+
+.deltaRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.deltaLabel {
+  color: #506070;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+}
+
+.deltaValue {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.pointsRow {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 6px;
+  padding: 6px 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.pointInfo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.pointLabel {
+  font-size: 10px;
+  font-weight: bold;
+}
+
+.pointValue {
+  font-size: 12px;
+  color: #c8d8e8;
+}
+
+.distanceRow {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  font-size: 10px;
+}
+
+.distanceLabel {
+  color: #506070;
+}
+
+.distanceValue {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.interpretation {
+  padding: 8px;
+  border-radius: 4px;
+  border-left: 3px solid;
+  background: rgba(255, 255, 255, 0.03);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.interpretationLabel {
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.interpretationDesc {
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.instruction {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(8, 12, 16, 0.9);
+  border: 1px solid rgba(255, 128, 64, 0.4);
+  border-radius: 6px;
+  padding: 12px 20px;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 12px;
+  color: #ff8040;
+  letter-spacing: 0.1em;
+  z-index: 500;
+  pointer-events: none;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.7; }
+  50% { opacity: 1; }
+}

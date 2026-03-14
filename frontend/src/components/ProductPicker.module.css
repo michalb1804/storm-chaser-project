@@ -62,3 +62,38 @@
   color: inherit;
   opacity: 0.6;
 }
+
+/* Source indicator for satellite products */
+.sourceIndicator {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 8px;
+  background: rgba(255,255,255,0.03);
+  border-radius: 4px;
+  margin-bottom: 4px;
+}
+
+.sourceDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #00e5a0;
+  animation: pulse 2s infinite;
+}
+
+.sourceDot[data-source="realearth"] {
+  background: #ff9800;
+}
+
+.sourceLabel {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.05em;
+  color: rgba(255,255,255,0.5);
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
