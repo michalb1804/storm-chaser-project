@@ -1,0 +1,214 @@
+2026-03-14 10:02:05  INFO     ==================================================
+2026-03-14 10:02:05  INFO     IMGW Radar Scheduler uruchomiony
+2026-03-14 10:02:05  INFO     Produkty: ['COMPO_CMAX', 'COMPO_CAPPI', 'COMPO_EHT', 'COMPO_SRI', 'COMPO_DPSRI']
+2026-03-14 10:02:05  INFO     Interwał odpytywania: 60s
+2026-03-14 10:02:05  INFO     Baza: radar.db
+2026-03-14 10:02:05  INFO     ==================================================
+2026-03-14 10:02:05  INFO     Baza zainicjowana: radar.db
+2026-03-14 10:02:05  INFO     ── Cykl #1 (09:02:05 UTC) ──
+2026-03-14 10:02:05  INFO     [COMPO_CMAX] Sprawdzam ...
+2026-03-14 10:02:06  INFO     [COMPO_CMAX] ✓ 09:00 UTC  min=-23.5  max=43.8  nan=92%  scan_id=1
+2026-03-14 10:02:06  INFO     [COMPO_CAPPI] Sprawdzam ...
+2026-03-14 10:02:08  INFO     [COMPO_CAPPI] ✓ 09:00 UTC  min=-22.0  max=43.8  nan=95%  scan_id=2
+2026-03-14 10:02:08  INFO     [COMPO_EHT] Sprawdzam ...
+2026-03-14 10:02:08  INFO     [COMPO_EHT] ✓ 09:00 UTC  min=0.5  max=20.0  nan=94%  scan_id=3
+2026-03-14 10:02:08  INFO     [COMPO_SRI] Sprawdzam ...
+2026-03-14 10:02:09  INFO     [COMPO_SRI] ✓ 09:00 UTC  min=0.0  max=17.9  nan=95%  scan_id=4
+2026-03-14 10:02:09  INFO     [COMPO_DPSRI] Sprawdzam ...
+2026-03-14 10:02:10  INFO     [COMPO_DPSRI] ✓ 08:55 UTC  min=0.0  max=35.3  nan=94%  scan_id=5
+2026-03-14 10:02:10  INFO     Czekam 60s ...
+2026-03-14 10:02:43  INFO     Zatrzymano przez użytkownika.
+2026-03-14 10:06:22  INFO     ==================================================
+2026-03-14 10:06:22  INFO     IMGW Radar Scheduler uruchomiony
+2026-03-14 10:06:22  INFO     Produkty: ['COMPO_CMAX', 'COMPO_EHT', 'COMPO_SRI', 'LEG_KDP', 'LEG_ZDR', 'LEG_RHOHV']
+2026-03-14 10:06:22  INFO     Interwał odpytywania: 60s
+2026-03-14 10:06:22  INFO     Baza: radar.db
+2026-03-14 10:06:22  INFO     ==================================================
+2026-03-14 10:06:22  INFO     Baza zainicjowana: radar.db
+2026-03-14 10:06:22  INFO     ── Cykl #1 (09:06:22 UTC) ──
+2026-03-14 10:07:58  INFO     ==================================================
+2026-03-14 10:07:58  INFO     IMGW Radar Scheduler uruchomiony
+2026-03-14 10:07:58  INFO     Produkty: ['COMPO_CMAX', 'COMPO_EHT', 'COMPO_SRI', 'LEG_KDP', 'LEG_ZDR', 'LEG_RHOHV']
+2026-03-14 10:07:58  INFO     Interwał odpytywania: 60s
+2026-03-14 10:07:58  INFO     Baza: radar.db
+2026-03-14 10:07:58  INFO     ==================================================
+2026-03-14 10:07:58  INFO     Baza zainicjowana: radar.db
+2026-03-14 10:07:58  INFO     ── Cykl #1 (09:07:58 UTC) ──
+2026-03-14 10:07:58  INFO     [COMPO_CMAX] Sprawdzam ...
+2026-03-14 10:07:58  INFO     [COMPO_EHT] Sprawdzam ...
+2026-03-14 10:07:58  INFO     [COMPO_SRI] Sprawdzam ...
+2026-03-14 10:07:58  INFO     [LEG_KDP] Sprawdzam ...
+2026-03-14 10:07:58  INFO     [COMPO_EHT] ✓ 09:05 UTC  min=0.5  max=20.0  nan=95%  scan_id=6
+2026-03-14 10:07:59  INFO     [COMPO_CMAX] ✓ 09:05 UTC  min=-27.0  max=49.8  nan=93%  scan_id=7
+2026-03-14 10:07:59  INFO     [LEG_ZDR] Sprawdzam ...
+2026-03-14 10:07:59  INFO     [LEG_RHOHV] Sprawdzam ...
+2026-03-14 10:07:59  INFO     [COMPO_SRI] ✓ 09:05 UTC  min=0.0  max=11.2  nan=95%  scan_id=8
+2026-03-14 10:08:00  WARNING  [LEG_KDP] Nie znaleziono pliku
+2026-03-14 10:08:01  WARNING  [LEG_ZDR] Nie znaleziono pliku
+2026-03-14 10:08:01  WARNING  [LEG_RHOHV] Nie znaleziono pliku
+2026-03-14 10:08:02  INFO     Cykl zakończony: ok=3 skip=0 err=3 t=4.1s
+2026-03-14 10:08:02  INFO     Czekam 60s ...
+2026-03-14 10:09:01  INFO     Zatrzymano przez użytkownika.
+2026-03-14 10:10:47  INFO     ==================================================
+2026-03-14 10:10:47  INFO     IMGW Radar Scheduler uruchomiony
+2026-03-14 10:10:47  INFO     Produkty: ['LEG_KDP']
+2026-03-14 10:10:47  INFO     Interwał odpytywania: 60s
+2026-03-14 10:10:47  INFO     Baza: radar.db
+2026-03-14 10:10:47  INFO     ==================================================
+2026-03-14 10:10:47  INFO     Baza zainicjowana: radar.db
+2026-03-14 10:10:47  INFO     ── Cykl #1 (09:10:47 UTC) ──
+2026-03-14 10:10:47  INFO     [LEG_KDP] Sprawdzam ...
+2026-03-14 10:10:50  WARNING  [LEG_KDP] Nie znaleziono pliku
+2026-03-14 10:10:50  INFO     Cykl zakończony: ok=0 skip=0 err=1 t=2.4s
+2026-03-14 10:10:50  INFO     Czekam 60s ...
+2026-03-14 10:21:12  INFO     ==================================================
+2026-03-14 10:21:12  INFO     IMGW Radar Scheduler uruchomiony
+2026-03-14 10:21:12  INFO     Produkty: ['LEG_KDP']
+2026-03-14 10:21:12  INFO     Interwał odpytywania: 60s
+2026-03-14 10:21:12  INFO     Baza: radar.db
+2026-03-14 10:21:12  INFO     ==================================================
+2026-03-14 10:21:12  INFO     Baza zainicjowana: radar.db
+2026-03-14 10:21:12  INFO     ── Cykl #1 (09:21:12 UTC) ──
+2026-03-14 10:21:12  INFO     [LEG_KDP] Sprawdzam ...
+2026-03-14 10:21:13  ERROR      Błąd zapisu do bazy: 'xsize'
+2026-03-14 10:21:14  INFO     [LEG_KDP] ✓ 09:15 UTC  min=nan  max=nan  nan=100%  scan_id=None
+2026-03-14 10:21:16  INFO     Cykl zakończony: ok=1 skip=0 err=0 t=3.2s
+2026-03-14 10:21:16  INFO     Czekam 60s ...
+2026-03-14 10:21:45  INFO     Zatrzymano przez użytkownika.
+2026-03-14 10:25:01  INFO     ==================================================
+2026-03-14 10:25:01  INFO     IMGW Radar Scheduler uruchomiony
+2026-03-14 10:25:01  INFO     Produkty: ['LEG_KDP']
+2026-03-14 10:25:01  INFO     Interwał odpytywania: 60s
+2026-03-14 10:25:01  INFO     Baza: radar.db
+2026-03-14 10:25:01  INFO     ==================================================
+2026-03-14 10:25:01  INFO     Baza zainicjowana: radar.db
+2026-03-14 10:25:01  INFO     ── Cykl #1 (09:25:01 UTC) ──
+2026-03-14 10:25:01  INFO     [LEG_KDP] Sprawdzam ...
+2026-03-14 10:25:01  INFO     [LEG_KDP] ✓ 09:20 UTC  min=nan  max=nan  nan=100%  scan_id=9
+2026-03-14 10:25:01  INFO     Cykl zakończony: ok=1 skip=0 err=0 t=0.5s
+2026-03-14 10:25:01  INFO     Czekam 60s ...
+2026-03-14 10:25:22  INFO     Zatrzymano przez użytkownika.
+2026-03-14 10:26:59  INFO     ==================================================
+2026-03-14 10:26:59  INFO     IMGW Radar Scheduler uruchomiony
+2026-03-14 10:26:59  INFO     Produkty: ['COMPO_CMAX', 'COMPO_EHT', 'COMPO_SRI', 'LEG_KDP', 'LEG_ZDR', 'LEG_RHOHV']
+2026-03-14 10:26:59  INFO     Interwał odpytywania: 60s
+2026-03-14 10:26:59  INFO     Baza: radar.db
+2026-03-14 10:26:59  INFO     ==================================================
+2026-03-14 10:26:59  INFO     Baza zainicjowana: radar.db
+2026-03-14 10:26:59  INFO     ── Cykl #1 (09:26:59 UTC) ──
+2026-03-14 10:26:59  INFO     [COMPO_CMAX] Sprawdzam ...
+2026-03-14 10:26:59  INFO     [COMPO_EHT] Sprawdzam ...
+2026-03-14 10:26:59  INFO     [COMPO_SRI] Sprawdzam ...
+2026-03-14 10:26:59  INFO     [LEG_KDP] Sprawdzam ...
+2026-03-14 10:26:59  INFO     [COMPO_EHT] ✓ 09:20 UTC  min=0.5  max=20.0  nan=95%  scan_id=10
+2026-03-14 10:26:59  INFO     [COMPO_SRI] ✓ 09:20 UTC  min=0.0  max=13.9  nan=95%  scan_id=11
+2026-03-14 10:27:00  INFO     [COMPO_CMAX] ✓ 09:20 UTC  min=-24.0  max=42.3  nan=93%  scan_id=12
+2026-03-14 10:27:00  INFO     [LEG_KDP] Skan 09:20 już w bazie — pomijam
+2026-03-14 10:27:00  INFO     [LEG_ZDR] Sprawdzam ...
+2026-03-14 10:27:00  INFO     [LEG_RHOHV] Sprawdzam ...
+2026-03-14 10:27:02  INFO     [LEG_RHOHV] ✓ 09:20 UTC  min=0.0  max=1.0  nan=99%  scan_id=13
+2026-03-14 10:27:02  INFO     [LEG_ZDR] ✓ 09:20 UTC  min=-8.0  max=11.7  nan=99%  scan_id=14
+2026-03-14 10:27:02  INFO     Cykl zakończony: ok=5 skip=1 err=0 t=3.2s
+2026-03-14 10:27:02  INFO     Czekam 60s ...
+2026-03-14 10:27:51  INFO     Zatrzymano przez użytkownika.
+2026-03-14 10:36:59  INFO     ==================================================
+2026-03-14 10:36:59  INFO     IMGW Radar Scheduler uruchomiony
+2026-03-14 10:36:59  INFO     Produkty: ['COMPO_CMAX', 'COMPO_CAPPI', 'COMPO_EHT', 'COMPO_SRI', 'COMPO_DPSRI', 'LEG_KDP', 'LEG_ZDR', 'LEG_RHOHV']
+2026-03-14 10:36:59  INFO     Interwał odpytywania: 60s
+2026-03-14 10:36:59  INFO     Baza: radar.db
+2026-03-14 10:36:59  INFO     ==================================================
+2026-03-14 10:36:59  INFO     Baza zainicjowana: radar.db
+2026-03-14 10:36:59  INFO     ── Cykl #1 (09:36:59 UTC) ──
+2026-03-14 10:36:59  INFO     [COMPO_CMAX] Sprawdzam ...
+2026-03-14 10:36:59  INFO     [COMPO_CAPPI] Sprawdzam ...
+2026-03-14 10:36:59  INFO     [COMPO_EHT] Sprawdzam ...
+2026-03-14 10:36:59  INFO     [COMPO_SRI] Sprawdzam ...
+2026-03-14 10:37:00  INFO     [COMPO_CMAX] ✓ 09:30 UTC  min=-23.5  max=42.3  nan=94%  scan_id=15
+2026-03-14 10:37:00  INFO     [COMPO_SRI] ✓ 09:30 UTC  min=0.0  max=15.4  nan=96%  scan_id=16
+2026-03-14 10:37:00  INFO     [COMPO_DPSRI] Sprawdzam ...
+2026-03-14 10:37:00  INFO     [LEG_KDP] Sprawdzam ...
+2026-03-14 10:37:00  INFO     [COMPO_EHT] ✓ 09:30 UTC  min=0.5  max=20.0  nan=95%  scan_id=17
+2026-03-14 10:37:00  INFO     [LEG_ZDR] Sprawdzam ...
+2026-03-14 10:37:00  INFO     [COMPO_CAPPI] ✓ 09:30 UTC  min=-20.5  max=42.3  nan=95%  scan_id=18
+2026-03-14 10:37:01  INFO     [LEG_KDP] ✓ 09:35 UTC  min=nan  max=nan  nan=100%  scan_id=19
+2026-03-14 10:37:01  INFO     [LEG_RHOHV] Sprawdzam ...
+2026-03-14 10:37:01  INFO     [COMPO_DPSRI] ✓ 09:30 UTC  min=0.0  max=19.9  nan=95%  scan_id=20
+2026-03-14 10:37:01  INFO     [LEG_ZDR] ✓ 09:35 UTC  min=-8.0  max=11.8  nan=99%  scan_id=21
+2026-03-14 10:37:01  INFO     [LEG_RHOHV] ✓ 09:35 UTC  min=0.0  max=1.0  nan=99%  scan_id=22
+2026-03-14 10:37:01  INFO     Cykl zakończony: ok=8 skip=0 err=0 t=2.4s
+2026-03-14 10:37:01  INFO     Czekam 60s ...
+2026-03-14 10:37:06  INFO     Zatrzymano przez użytkownika.
+2026-03-14 10:38:39  INFO     ==================================================
+2026-03-14 10:38:39  INFO     IMGW Radar Scheduler uruchomiony
+2026-03-14 10:38:39  INFO     Produkty: ['COMPO_CMAX', 'COMPO_CAPPI', 'COMPO_EHT', 'COMPO_SRI', 'COMPO_DPSRI', 'LEG_PPI', 'LEG_CAPPI', 'LEG_DPSRI', 'LEG_EHT', 'LEG_SRI', 'LEG_KDP', 'LEG_ZDR', 'LEG_RHOHV']
+2026-03-14 10:38:39  INFO     Interwał odpytywania: 60s
+2026-03-14 10:38:39  INFO     Baza: radar.db
+2026-03-14 10:38:39  INFO     ==================================================
+2026-03-14 10:38:39  INFO     Baza zainicjowana: radar.db
+2026-03-14 10:38:39  INFO     ── Cykl #1 (09:38:39 UTC) ──
+2026-03-14 10:38:39  INFO     [COMPO_CMAX] Sprawdzam ...
+2026-03-14 10:38:39  INFO     [COMPO_CAPPI] Sprawdzam ...
+2026-03-14 10:38:39  INFO     [COMPO_EHT] Sprawdzam ...
+2026-03-14 10:38:39  INFO     [COMPO_SRI] Sprawdzam ...
+2026-03-14 10:38:39  INFO     [COMPO_EHT] ✓ 09:35 UTC  min=0.5  max=20.0  nan=95%  scan_id=23
+2026-03-14 10:38:39  INFO     [COMPO_DPSRI] Sprawdzam ...
+2026-03-14 10:38:40  INFO     [COMPO_SRI] ✓ 09:35 UTC  min=0.0  max=13.9  nan=96%  scan_id=24
+2026-03-14 10:38:40  INFO     [LEG_PPI] Sprawdzam ...
+2026-03-14 10:38:40  INFO     [COMPO_CAPPI] ✓ 09:35 UTC  min=-20.5  max=41.8  nan=95%  scan_id=25
+2026-03-14 10:38:40  INFO     [LEG_CAPPI] Sprawdzam ...
+2026-03-14 10:38:40  INFO     [COMPO_CMAX] ✓ 09:35 UTC  min=-24.5  max=41.8  nan=94%  scan_id=26
+2026-03-14 10:38:40  INFO     [COMPO_DPSRI] ✓ 09:35 UTC  min=0.0  max=32.9  nan=95%  scan_id=27
+2026-03-14 10:38:40  INFO     [LEG_DPSRI] Sprawdzam ...
+2026-03-14 10:38:40  INFO     [LEG_EHT] Sprawdzam ...
+2026-03-14 10:38:41  INFO     [LEG_PPI] ✓ 09:35 UTC  min=4.6  max=17.2  nan=100%  scan_id=28
+2026-03-14 10:38:41  INFO     [LEG_SRI] Sprawdzam ...
+2026-03-14 10:38:41  INFO     [LEG_DPSRI] ✓ 09:35 UTC  min=nan  max=nan  nan=100%  scan_id=29
+2026-03-14 10:38:41  INFO     [LEG_KDP] Sprawdzam ...
+2026-03-14 10:38:41  INFO     [LEG_KDP] Ostatni skan 3.6 min temu — pomijam
+2026-03-14 10:38:41  INFO     [LEG_EHT] ✓ 09:35 UTC  min=0.5  max=5.1  nan=100%  scan_id=30
+2026-03-14 10:38:41  INFO     [LEG_ZDR] Sprawdzam ...
+2026-03-14 10:38:42  INFO     [LEG_ZDR] Ostatni skan 3.6 min temu — pomijam
+2026-03-14 10:38:42  INFO     [LEG_RHOHV] Sprawdzam ...
+2026-03-14 10:38:42  INFO     [LEG_RHOHV] Ostatni skan 3.6 min temu — pomijam
+2026-03-14 10:38:42  INFO     [LEG_SRI] ✓ 09:35 UTC  min=nan  max=nan  nan=100%  scan_id=31
+2026-03-14 10:38:43  INFO     [LEG_CAPPI] ✓ 09:33 UTC  min=-24.8  max=28.2  nan=98%  scan_id=32
+2026-03-14 10:38:43  INFO     Cykl zakończony: ok=10 skip=3 err=0 t=4.0s
+2026-03-14 10:38:43  INFO     Czekam 60s ...
+2026-03-14 10:38:46  INFO     Zatrzymano przez użytkownika.
+2026-03-14 10:47:35  INFO     ==================================================
+2026-03-14 10:47:35  INFO     IMGW Radar Scheduler uruchomiony
+2026-03-14 10:47:35  INFO     Produkty: ['COMPO_CMAX', 'COMPO_CAPPI', 'COMPO_EHT', 'COMPO_SRI', 'COMPO_DPSRI', 'LEG_PPI', 'LEG_CAPPI', 'LEG_DPSRI', 'LEG_EHT', 'LEG_SRI', 'LEG_KDP', 'LEG_ZDR', 'LEG_RHOHV']
+2026-03-14 10:47:35  INFO     Interwał odpytywania: 60s
+2026-03-14 10:47:35  INFO     Baza: radar.db
+2026-03-14 10:47:35  INFO     ==================================================
+2026-03-14 10:47:35  INFO     Baza zainicjowana: radar.db
+2026-03-14 10:47:35  INFO     ── Cykl #1 (09:47:35 UTC) ──
+2026-03-14 10:47:35  INFO     [COMPO_CMAX] Sprawdzam ...
+2026-03-14 10:47:35  INFO     [COMPO_CAPPI] Sprawdzam ...
+2026-03-14 10:47:35  INFO     [COMPO_EHT] Sprawdzam ...
+2026-03-14 10:47:35  INFO     [COMPO_SRI] Sprawdzam ...
+2026-03-14 10:47:35  INFO     [COMPO_CAPPI] ✓ 09:45 UTC  min=-23.5  max=40.3  nan=95%  scan_id=33
+2026-03-14 10:47:35  INFO     [COMPO_DPSRI] Sprawdzam ...
+2026-03-14 10:47:36  INFO     [COMPO_SRI] ✓ 09:45 UTC  min=0.0  max=11.2  nan=96%  scan_id=34
+2026-03-14 10:47:36  INFO     [LEG_PPI] Sprawdzam ...
+2026-03-14 10:47:36  INFO     [COMPO_CMAX] ✓ 09:45 UTC  min=-24.0  max=40.8  nan=94%  scan_id=35
+2026-03-14 10:47:36  INFO     [LEG_CAPPI] Sprawdzam ...
+2026-03-14 10:47:36  INFO     [COMPO_DPSRI] ✓ 09:45 UTC  min=0.0  max=35.3  nan=95%  scan_id=36
+2026-03-14 10:47:36  INFO     [LEG_DPSRI] Sprawdzam ...
+2026-03-14 10:47:36  INFO     [LEG_PPI] ✓ 09:45 UTC  min=15.7  max=15.7  nan=100%  scan_id=37
+2026-03-14 10:47:36  INFO     [LEG_EHT] Sprawdzam ...
+2026-03-14 10:47:36  INFO     [COMPO_EHT] ✓ 09:45 UTC  min=0.5  max=20.0  nan=95%  scan_id=38
+2026-03-14 10:47:37  INFO     [LEG_SRI] Sprawdzam ...
+2026-03-14 10:47:37  INFO     [LEG_EHT] ✓ 09:45 UTC  min=0.5  max=5.2  nan=100%  scan_id=39
+2026-03-14 10:47:37  INFO     [LEG_KDP] Sprawdzam ...
+2026-03-14 10:47:37  INFO     [LEG_DPSRI] ✓ 09:45 UTC  min=nan  max=nan  nan=100%  scan_id=40
+2026-03-14 10:47:37  INFO     [LEG_ZDR] Sprawdzam ...
+2026-03-14 10:47:37  INFO     [LEG_SRI] ✓ 09:45 UTC  min=nan  max=nan  nan=100%  scan_id=41
+2026-03-14 10:47:37  INFO     [LEG_RHOHV] Sprawdzam ...
+2026-03-14 10:47:38  INFO     [LEG_RHOHV] ✓ 09:45 UTC  min=0.0  max=1.0  nan=99%  scan_id=42
+2026-03-14 10:47:38  INFO     [LEG_ZDR] ✓ 09:45 UTC  min=-7.3  max=11.9  nan=99%  scan_id=43
+2026-03-14 10:47:38  INFO     [LEG_KDP] ✓ 09:45 UTC  min=nan  max=nan  nan=100%  scan_id=44
+2026-03-14 10:47:39  INFO     [LEG_CAPPI] ✓ 09:43 UTC  min=-25.1  max=29.7  nan=98%  scan_id=45
+2026-03-14 10:47:39  INFO     Cykl zakończony: ok=13 skip=0 err=0 t=4.4s
+2026-03-14 10:47:39  INFO     Czekam 60s ...
+2026-03-14 10:47:43  INFO     Zatrzymano przez użytkownika.

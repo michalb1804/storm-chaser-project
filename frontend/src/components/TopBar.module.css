@@ -1,0 +1,59 @@
+.topbar {
+  height: 36px;
+  min-height: 36px;
+  background: var(--bg-panel);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+  z-index: 5;
+}
+
+.left, .right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.productName {
+  font-family: var(--mono);
+  font-size: 13px;
+  color: var(--accent);
+  letter-spacing: 0.1em;
+}
+
+.sep { color: var(--border-hi); }
+
+.scanTime {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--text);
+  letter-spacing: 0.04em;
+}
+
+.spinner {
+  font-size: 14px;
+  color: var(--accent2);
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.stat {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--text-dim);
+  letter-spacing: 0.08em;
+}
+
+.statVal {
+  color: var(--text-hi);
+  margin-left: 4px;
+}
+
+.cacheAge {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--text-dim);
+}

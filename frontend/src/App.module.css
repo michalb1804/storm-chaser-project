@@ -1,0 +1,83 @@
+.app {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  position: relative;
+}
+
+.mapWrapper {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Error overlay */
+.errorOverlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(8, 12, 16, 0.88);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  z-index: 1000;
+}
+
+.errorIcon {
+  font-size: 32px;
+  color: var(--danger);
+}
+
+.errorText {
+  font-family: var(--mono);
+  font-size: 16px;
+  color: var(--text-hi);
+  letter-spacing: 0.12em;
+}
+
+.errorSub {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--text-dim);
+  max-width: 320px;
+  text-align: center;
+}
+
+.retryBtn {
+  margin-top: 8px;
+  padding: 8px 20px;
+  background: none;
+  border: 1px solid var(--accent);
+  color: var(--accent);
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  cursor: pointer;
+  border-radius: 3px;
+  transition: all 0.15s;
+}
+.retryBtn:hover {
+  background: rgba(0, 229, 160, 0.1);
+}
+
+/* Watermark */
+.watermark {
+  position: absolute;
+  bottom: 28px;
+  right: 12px;
+  font-family: var(--mono);
+  font-size: 9px;
+  color: rgba(80, 96, 112, 0.6);
+  letter-spacing: 0.12em;
+  pointer-events: none;
+  z-index: 500;
+}
