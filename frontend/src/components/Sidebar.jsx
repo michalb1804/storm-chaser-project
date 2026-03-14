@@ -1,19 +1,26 @@
 // components/Sidebar.jsx
+// Pasek boczny: tytuł, ProductPicker, meta, wartość w punkcie, georef.
+import { useState } from 'react'
+import ProductPicker from './ProductPicker.jsx'
 import styles from './Sidebar.module.css'
-import { RADAR_PRODUCTS } from '../hooks/useRadar'
 
-function fmt(val, units) {
-  if (val == null) return '—'
-  const n = typeof val === 'number' ? val.toFixed(1) : val
-  return units ? `${n} ${units}` : `${n}`
+function fmt(value, quantity) {
+  if (value == null) return '—'
+  if (quantity === 'dBZ' || quantity === 'DBZH') return `${value.toFixed(1)} dBZ`
+  if (quantity === 'Height' || quantity === 'EHT')  return `${value.toFixed(1)} km`
+  if (quantity === 'SRI' || quantity === 'mm/h')    return `${value.toFixed(2)} mm/h`
+  if (quantity === 'KDP')  return `${value.toFixed(2)} °/km`
+  if (quantity === 'ZDR')  return `${value.toFixed(2)} dB`
+  return `${value.toFixed(2)}`
 }
 
-function fmtTime(isoStr) {
+function formatScanTime(isoStr) {
   if (!isoStr) return '—'
   try {
     const d = new Date(isoStr)
-    return d.toUTCString().replace('GMT', 'UTC').slice(0, -4)
-  } catch { return isoStr }
+    const pad = n => String(n).padStart(2, '0')
+    return `${pad(d.getUTCDate())}.${pad(d.getUTCMonth()+1)} ${pad(d.getUTCHours())}:${pad(d.getUTCMinutes())}z`
+  } catch { return '—' }
 }
 
 export default function Sidebar({
@@ -21,64 +28,64 @@ export default function Sidebar({
   meta, loading, error, lastUpdate, onRefresh,
   pointValue,
 }) {
+  const [pickerOpen, setPickerOpen] = useState(false)
+
   return (
     <aside className={styles.sidebar}>
-
-      {/* Header */}
+      {/* Nagłówek */}
       <div className={styles.header}>
-        <span className={styles.logo}>⬡ STORM</span>
-        <span className={styles.version}>v0.1</span>
+        <span className={styles.logo}>ATMOS</span>
+        <span className={styles.logoSub}>Storm Radar Pro</span>
       </div>
 
-      {/* Status */}
-      <div className={styles.statusBar}>
-        <span className={`${styles.dot} ${loading ? styles.dotPulse : styles.dotOk}`} />
-        <span className={styles.statusText}>
-          {loading ? 'POBIERANIE...' : error ? 'BŁĄD' : 'LIVE'}
-        </span>
-        <span className={styles.updateTime}>
-          {lastUpdate ? lastUpdate.toLocaleTimeString('pl', { hour12: false }) : '—'}
-        </span>
-        <button className={styles.refreshBtn} onClick={onRefresh} title="Odśwież">↺</button>
-      </div>
-
-      {/* Wybór produktu */}
+      {/* Aktywny produkt + toggle pickera */}
       <section className={styles.section}>
         <div className={styles.sectionTitle}>PRODUKT</div>
-        <div className={styles.productList}>
-          {Object.entries(RADAR_PRODUCTS).map(([key, p]) => (
-            <button
-              key={key}
-              className={`${styles.productBtn} ${product === key ? styles.productBtnActive : ''}`}
-              onClick={() => onProductChange(key)}
-              style={{ '--accent-color': p.color }}
-            >
-              <span className={styles.productLabel}>{p.label}</span>
-              <span className={styles.productDesc}>{p.desc}</span>
-            </button>
-          ))}
-        </div>
+        <button
+          className={styles.productToggle}
+          onClick={() => setPickerOpen(o => !o)}
+          title="Zmień produkt radarowy"
+        >
+          <span className={styles.productKey}>{product}</span>
+          <span className={styles.productArrow}>{pickerOpen ? '▲' : '▼'}</span>
+        </button>
+
+        {pickerOpen && (
+          <div className={styles.pickerWrap}>
+            <ProductPicker
+              value={product}
+              onChange={key => { onProductChange(key); setPickerOpen(false) }}
+            />
+          </div>
+        )}
       </section>
 
-      {/* Metadane skanu */}
+      {/* Status / meta */}
       <section className={styles.section}>
-        <div className={styles.sectionTitle}>SKAN</div>
+        <div className={styles.sectionTitle}>STATUS</div>
         <div className={styles.metaGrid}>
-          <span className={styles.metaKey}>CZAS</span>
-          <span className={styles.metaVal}>{fmtTime(meta?.scan_time)}</span>
-
-          <span className={styles.metaKey}>PRODUKT</span>
-          <span className={styles.metaVal}>{meta?.quantity || '—'}</span>
-
-          <span className={styles.metaKey}>MAX</span>
-          <span className={styles.metaVal}>{fmt(meta?.val_max, meta?.quantity === 'DBZH' ? 'dBZ' : '')}</span>
-
-          <span className={styles.metaKey}>NaN%</span>
-          <span className={styles.metaVal}>{meta?.nan_pct != null ? `${meta.nan_pct.toFixed(1)}%` : '—'}</span>
+          <span className={styles.metaKey}>SKAN</span>
+          <span className={styles.metaVal}>
+            {loading ? '…' : formatScanTime(meta?.scan_time)}
+          </span>
 
           <span className={styles.metaKey}>CACHE</span>
-          <span className={styles.metaVal}>{meta?.cache_age_s != null ? `${meta.cache_age_s.toFixed(0)}s` : '—'}</span>
+          <span className={styles.metaVal}>
+            {meta?.cache_age_s != null ? `${meta.cache_age_s.toFixed(0)}s` : '—'}
+          </span>
         </div>
+
+        <button
+          className={styles.refreshBtn}
+          onClick={onRefresh}
+          disabled={loading}
+        >
+          {loading ? 'ŁADOWANIE…' : '⟳ ODŚWIEŻ'}
+        </button>
+
+        {error && (
+          <div className={styles.errorMsg}>{error}</div>
+        )}
       </section>
 
       {/* Wartość w punkcie */}
@@ -102,23 +109,6 @@ export default function Sidebar({
           <div className={styles.pointHint}>Kliknij dowolny punkt na mapie</div>
         )}
       </section>
-
-      {/* Georef info */}
-      {meta?.georef && (
-        <section className={styles.section}>
-          <div className={styles.sectionTitle}>SIATKA</div>
-          <div className={styles.metaGrid}>
-            <span className={styles.metaKey}>ROZM</span>
-            <span className={styles.metaVal}>{meta.georef.shape?.join('×')}</span>
-            <span className={styles.metaKey}>PROJ</span>
-            <span className={styles.metaVal}>{meta.georef.projection?.toUpperCase()}</span>
-            <span className={styles.metaKey}>LAT</span>
-            <span className={styles.metaVal}>{meta.georef.lat_min?.toFixed(2)}–{meta.georef.lat_max?.toFixed(2)}</span>
-            <span className={styles.metaKey}>LON</span>
-            <span className={styles.metaVal}>{meta.georef.lon_min?.toFixed(2)}–{meta.georef.lon_max?.toFixed(2)}</span>
-          </div>
-        </section>
-      )}
 
       {/* Stopka */}
       <div className={styles.footer}>

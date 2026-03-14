@@ -1,0 +1,64 @@
+/* components/ProductPicker.module.css */
+
+.picker {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.group {}
+
+.groupLabel {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.14em;
+  color: rgba(255,255,255,0.3);
+  text-transform: uppercase;
+  margin-bottom: 5px;
+  padding-left: 2px;
+}
+
+.items {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.item {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.05em;
+  padding: 4px 8px;
+  border-radius: 5px;
+  border: 1px solid rgba(255,255,255,0.10);
+  background: rgba(255,255,255,0.04);
+  color: rgba(255,255,255,0.55);
+  cursor: pointer;
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+  transition: border-color 0.12s, background 0.12s, color 0.12s;
+  white-space: nowrap;
+}
+
+.item:hover {
+  border-color: rgba(0, 229, 160, 0.35);
+  color: rgba(255,255,255,0.85);
+  background: rgba(0, 229, 160, 0.06);
+}
+
+.item.active {
+  border-color: rgba(0, 229, 160, 0.7);
+  background: rgba(0, 229, 160, 0.12);
+  color: #00e5a0;
+}
+
+.itemLabel {
+  font-weight: 500;
+}
+
+.itemUnits {
+  font-size: 9px;
+  color: inherit;
+  opacity: 0.6;
+}

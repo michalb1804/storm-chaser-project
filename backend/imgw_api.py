@@ -40,8 +40,9 @@ import io
 import os
 import time
 import logging
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta
 from typing import Any
+import struct, base64
 
 import numpy as np
 from fastapi import FastAPI, HTTPException, Query, Response
@@ -49,7 +50,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
 from imgw_cache import get_cache, CACHE_TTL_S
-from imgw_radar import PRODUCTS, query_point, latlon_to_pixel, nws_dbz_cmap
+from imgw_radar import PRODUCTS, query_point, latlon_to_pixel, nws_dbz_cmap, find_latest, make_url, make_timestamp, download_file
 from gfs_cache import get_gfs_cache
 from gfs_ingestor import PARAMS as GFS_PARAMS, PARAM_GROUPS as GFS_GROUPS, DERIVED_PARAMS as GFS_DERIVED
 
@@ -172,6 +173,95 @@ def _render_png(result: dict, width: int = 900, height: int = 900) -> bytes:
     buf = io.BytesIO()
     img.save(buf, format="PNG", optimize=False)
     return buf.getvalue()
+
+WEBGL_MESH_STEP = 4   # próbkowanie siatki kontrolnej co N pikseli
+ 
+ 
+def _render_data_texture(result: dict) -> tuple[bytes, dict]:
+    """
+    Koduje dane radarowe jako raw RGBA bytes + parametry projekcji.
+ 
+    Format danych: flat Uint8Array, row-major, RGBA per piksel
+      R = val_raw >> 8       (high byte, 0..255)
+      G = val_raw & 0xFF     (low byte,  0..255)
+      B = 0
+      A = 255 jeśli dane, 0 jeśli NaN
+ 
+    val_raw = round((value - vmin) / (vmax - vmin) * 65534)  → [0..65534]
+ 
+    Wysyłamy jako base64 — frontend dekoduje do Uint8Array i uploaduje
+    jako WebGL texture bezpośrednio, bez konwersji PNG.
+    """
+    parsed   = result["parsed"]
+    georef   = result["georef"]
+    data     = parsed["data"]      # float64 (H, W)
+    H, W     = data.shape
+    quantity = parsed["quantity"]
+ 
+    if "DBZ" in quantity.upper():
+        vmin, vmax = -10.0, 70.0
+    else:
+        finite = data[np.isfinite(data)]
+        vmin = float(finite.min()) if len(finite) else 0.0
+        vmax = float(finite.max()) if len(finite) else 1.0
+ 
+    rgba = np.zeros((H, W, 4), dtype=np.uint8)
+ 
+    valid = np.isfinite(data)
+    raw   = np.clip(
+        (data - vmin) / (vmax - vmin) * 65534.0,
+        0, 65534
+    ).astype(np.uint16)
+ 
+    rgba[valid, 0] = (raw[valid] >> 8).astype(np.uint8)
+    rgba[valid, 1] = (raw[valid] & 0xFF).astype(np.uint8)
+    rgba[valid, 3] = 255
+    # NaN: A=0 (już ustawione przez np.zeros)
+ 
+    raw_bytes = rgba.tobytes()   # row-major, RGBA
+    data_b64  = base64.b64encode(raw_bytes).decode()
+ 
+    # Siatka kontrolna
+    mesh_lats = mesh_lons = None
+    mesh_rows = mesh_cols = 0
+    if georef is not None:
+        step     = WEBGL_MESH_STEP
+        lat_g    = georef["lat_grid"][::step, ::step]
+        lon_g    = georef["lon_grid"][::step, ::step]
+        mesh_lats = base64.b64encode(lat_g.astype(np.float32).tobytes()).decode()
+        mesh_lons = base64.b64encode(lon_g.astype(np.float32).tobytes()).decode()
+        mesh_rows, mesh_cols = lat_g.shape
+ 
+    proj = {
+        "quantity":  quantity,
+        "vmin":      vmin,
+        "vmax":      vmax,
+        "xsize":     W,
+        "ysize":     H,
+        "scan_time": result["scan_dt"].isoformat() if result["scan_dt"] else None,
+        "mesh_step": WEBGL_MESH_STEP,
+        "mesh_rows": mesh_rows,
+        "mesh_cols": mesh_cols,
+        "mesh_lats": mesh_lats,
+        "mesh_lons": mesh_lons,
+    }
+    if georef is not None:
+        proj.update({
+            "lat_min": float(georef["lat_grid"].min()),
+            "lat_max": float(georef["lat_grid"].max()),
+            "lon_min": float(georef["lon_grid"].min()),
+            "lon_max": float(georef["lon_grid"].max()),
+        })
+ 
+    return data_b64, proj
+
+def _resolve_scan_time(scan_time: str | None):
+    """Normalizuje scan_time string do formatu który pasuje do nazw plików."""
+    if not scan_time:
+        return None
+    # Usuń timezone suffix — get_by_scan_time parsuje pierwsze 12 znaków YYYYMMDDHHmm
+    return scan_time
+
 
 
 # ── Endpointy ─────────────────────────────────────────────────────────────────
@@ -374,6 +464,44 @@ def radar_image(
         headers=headers,
     )
 
+@app.get("/api/radar/{product}/webgl")
+def radar_webgl(product: str, scan_time: str = Query(None)):
+     product = product.upper()
+     if product not in PRODUCTS:
+         raise HTTPException(404, f"Nieznany produkt: {product}")
+
+     cache = get_cache()
+     if scan_time:
+         result = cache.get_by_scan_time(product, scan_time)
+         if result is None:
+             # Fallback: spróbuj pobrać najnowszy
+             result = cache.get(product)
+         if result is None:
+             raise HTTPException(503, f"Nie udało się pobrać {product}")
+     else:
+         result = cache.get(product)
+         if result is None:
+             raise HTTPException(503, f"Nie udało się pobrać {product}")
+
+     data_b64, proj = _render_data_texture(result)
+     return JSONResponse({"data_b64": data_b64, "proj": proj})
+ 
+ 
+@app.get("/api/radar/{product}/webgl/proj")
+def radar_webgl_proj(product: str, scan_time: str = Query(None)):
+    #Tylko parametry projekcji (bez textury) — lekki endpoint do prefetch.
+    product = product.upper()
+    if product not in PRODUCTS:
+        raise HTTPException(404, f"Nieznany produkt: {product}")
+ 
+    cache = get_cache()
+    result = cache.get_by_scan_time(product, scan_time) if scan_time else cache.get(product)
+    if result is None:
+        raise HTTPException(503, "Brak danych")
+ 
+    _, proj = _render_data_texture(result)
+    return JSONResponse(proj)
+
 
 # ── Cache management ──────────────────────────────────────────────────────────
 
@@ -386,6 +514,11 @@ def cache_status(products: str = Query(None,
     keys  = [p.strip().upper() for p in products.split(",")] \
             if products else list(PRODUCTS.keys())
     return cache.status_all(keys)
+
+@app.delete("/api/cache/flush")
+def cache_flush_all():
+     removed = get_cache().cleanup(keep_last=0)
+     return {"flushed": True, "removed_files": removed}
 
 
 @app.delete("/api/cache/{product}")
@@ -430,6 +563,77 @@ def radar_history(
         "product": product,
         "count":   len(scans),
         "scans":   scans,
+    }
+
+@app.post("/api/radar/{product}/history/fetch")
+def radar_history_fetch(
+    product: str,
+    count:   int = Query(5, ge=1, le=10, description="Ile skanów pobrać"),
+):
+    """
+    Pobiera `count` ostatnich skanów z IMGW dla produktu i zapisuje do cache.
+    Przydatne przy starcie — zamiast czekać na scheduler możesz jednym requestem
+    zapełnić historię.
+
+    Metoda: iteruje wstecz od najnowszego skanu co ~5 min, pobiera pliki HDF5.
+    Zwraca listę pobranych skanów.
+
+    Przykład: POST /api/radar/COMPO_CMAX/history/fetch?count=5
+    """
+    product = product.upper()
+    if product not in PRODUCTS:
+        raise HTTPException(404, f"Nieznany produkt: {product}")
+
+    cache       = get_cache()
+    downloaded  = []
+    errors      = []
+
+    # Znajdź najnowszy dostępny skan jako punkt startowy
+    latest_dt = find_latest(product)
+    if latest_dt is None:
+        raise HTTPException(503, f"Nie można znaleźć skanów dla {product}")
+
+    # Iteruj wstecz co 5 minut
+    current_dt = latest_dt
+    attempts   = 0
+    max_attempts = count * 4  # próbuj max 4x więcej żeby nadrobić brakujące
+
+    while len(downloaded) < count and attempts < max_attempts:
+        attempts += 1
+        ts         = make_timestamp(current_dt)
+        local_path = os.path.join(cache.cache_dir, product, f"{ts}.h5")
+
+        # Jeśli już mamy ten plik — policz jako pobrany
+        if os.path.exists(local_path):
+            age_s = time.time() - os.path.getmtime(local_path)
+            downloaded.append({
+                "scan_time": current_dt.isoformat(),
+                "timestamp": ts,
+                "cached":    True,
+                "age_s":     round(age_s, 1),
+            })
+        else:
+            url = make_url(product, current_dt)
+            ok  = download_file(url, local_path)
+            if ok:
+                age_s = time.time() - os.path.getmtime(local_path)
+                downloaded.append({
+                    "scan_time": current_dt.isoformat(),
+                    "timestamp": ts,
+                    "cached":    False,
+                    "age_s":     round(age_s, 1),
+                })
+            else:
+                errors.append(current_dt.isoformat())
+
+        # Krok wstecz — 5 minut
+        current_dt = current_dt - timedelta(minutes=5)
+
+    return {
+        "product":    product,
+        "downloaded": len(downloaded),
+        "scans":      downloaded,
+        "errors":     errors[:5],  # max 5 błędów w odpowiedzi
     }
 
 
