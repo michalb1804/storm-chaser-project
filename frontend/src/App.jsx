@@ -6,10 +6,18 @@ import TopBar      from './components/TopBar.jsx'
 import TimeSlider  from './components/TimeSlider.jsx'
 import { useRadarHistory }  from './hooks/useRadarHistory.js'
 import { usePointValue }    from './hooks/useRadar.js'
+import { useCells }         from './hooks/useCells.js'
+import ColorLegend from './components/ColorLegend.jsx'
 import styles from './App.module.css'
 
 export default function App() {
   const [product, setProduct] = useState('COMPO_CMAX')
+  const [radarProj, setRadarProj] = useState(null)
+
+  const handleProductChange = useCallback((p) => {
+    setProduct(p)
+    setRadarProj(null)
+  }, [])
 
   const {
     scans,
@@ -21,7 +29,9 @@ export default function App() {
     refresh,
   } = useRadarHistory(product, 5)
 
-  const { value: pointValue, query: queryPoint } = usePointValue(product)
+  const { value: pointValue, query: queryPoint } = usePointValue(product, selectedTs)
+  const cellData = useCells(product)
+  const [showCells, setShowCells] = useState(true)
 
   const handleMapClick = useCallback((lat, lon) => {
     queryPoint(lat, lon)
@@ -53,16 +63,13 @@ export default function App() {
     }
   }, [pointValue, product])
 
-  const noData = !histLoading && scans.length === 0
-
   return (
     <div className={styles.app}>
       <Sidebar
         product={product}
-        onProductChange={setProduct}
+        onProductChange={handleProductChange}
         meta={pseudoMeta}
         loading={histLoading}
-        error={noData ? 'Brak danych — odśwież' : null}
         lastUpdate={topScan ? new Date(topScan.scan_time) : null}
         onRefresh={refresh}
         pointValue={pointValue ?? null}
@@ -73,8 +80,7 @@ export default function App() {
           product={product}
           meta={pseudoMeta}
           loading={histLoading}
-          scanTime={scanTime}
-          live={live}
+          noData={scans.length === 0}
         />
         <div className={styles.mapWrapper}>
           <RadarMap
@@ -82,7 +88,11 @@ export default function App() {
             selectedTs={selectedTs}
             onMapClick={handleMapClick}
             popupContent={popupContent}
+            onProjLoad={setRadarProj}
+            cells={showCells ? cellData.cells : []}
           />
+
+          <ColorLegend proj={radarProj} product={product} />
 
           <TimeSlider
             scans={scans}
@@ -91,13 +101,16 @@ export default function App() {
             loading={histLoading}
           />
 
-          {noData && (
-            <div className={styles.errorOverlay}>
-              <span className={styles.errorIcon}>⚠</span>
-              <span className={styles.errorText}>Brak danych w cache</span>
-              <button className={styles.retryBtn} onClick={refresh}>PONÓW</button>
-            </div>
-          )}
+          <button
+            className={styles.cellToggle}
+            onClick={() => setShowCells(v => !v)}
+            title="Pokaż/ukryj komórki burzowe"
+          >
+            {showCells ? '⛈' : '⛈'}
+            <span className={showCells ? styles.cellToggleOn : styles.cellToggleOff}>
+              KOMÓRKI
+            </span>
+          </button>
 
           <div className={styles.watermark}>IMGW-PIB · NOAA GFS</div>
         </div>

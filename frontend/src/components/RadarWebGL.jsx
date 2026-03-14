@@ -44,6 +44,28 @@ function buildPalette() {
   return out
 }
 
+// Paleta prędkości radialnej: niebieski (vmin) → biały (0) → czerwony (vmax)
+function buildVelocityPalette(vmin, vmax) {
+  const out = new Uint8Array(256 * 4)
+  for (let i = 0; i < 256; i++) {
+    const v = vmin + (i / 255) * (vmax - vmin)
+    let r, g, b
+    if (v < 0) {
+      const s = v / vmin  // 1 przy vmin, 0 przy 0
+      r = Math.round(240 * (1 - s))
+      g = Math.round(240 * (1 - s))
+      b = Math.round(240 + (178 - 240) * (1 - s))
+    } else {
+      const s = vmax > 0 ? v / vmax : 0  // 0 przy 0, 1 przy vmax
+      r = Math.round(240 + (140 - 240) * s)
+      g = Math.round(240 * (1 - s))
+      b = Math.round(240 * (1 - s))
+    }
+    out[i*4]=r; out[i*4+1]=g; out[i*4+2]=b; out[i*4+3]=255
+  }
+  return out
+}
+
 // ── Shaders ────────────────────────────────────────────────────────────────
 const VERT = `
 precision mediump float;
@@ -176,6 +198,12 @@ class Renderer {
     this.map      = null
   }
 
+  updatePalette(pixels) {
+    const gl = this.gl
+    gl.bindTexture(gl.TEXTURE_2D, this.tPal)
+    gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,256,1,0,gl.RGBA,gl.UNSIGNED_BYTE,pixels)
+  }
+
   destroy() {
     this.cv.remove()
     const gl = this.gl
@@ -197,6 +225,15 @@ class Renderer {
     this.triCount = 0
     this.lats     = b64toF32(proj.mesh_lats)
     this.lons     = b64toF32(proj.mesh_lons)
+
+    const q = (proj.quantity ?? '').toUpperCase()
+    const isVelocity = q === 'VRAD' || q === 'V' || q === 'VRADDH' || q === 'VRADS'
+                    || (proj.product ?? '').toUpperCase().endsWith('CAPPI_V')
+    if (isVelocity) {
+      this.updatePalette(buildVelocityPalette(proj.vmin, proj.vmax))
+    } else {
+      this.updatePalette(buildPalette())
+    }
 
     const gl     = this.gl
     const pixels = b64toU8(data_b64)   // Uint8Array RGBA flat
@@ -303,7 +340,7 @@ class Renderer {
 }
 
 // ── React komponent ────────────────────────────────────────────────────────
-export default function RadarWebGL({ product, selectedTs, map, opacity = 0.85 }) {
+export default function RadarWebGL({ product, selectedTs, map, opacity = 0.85, onProjLoad }) {
   const rendRef  = useRef(null)
   const abortRef = useRef(null)
 
@@ -336,7 +373,8 @@ export default function RadarWebGL({ product, selectedTs, map, opacity = 0.85 })
       if (!res.ok) throw new Error(`HTTP ${res.status}`)
       const json = await res.json()
       // Backend zwraca data_b64 (raw RGBA) lub texture_b64 (PNG) — obsłuż oba
-      rendRef.current?.loadData(json.data_b64 ?? json.texture_b64, json.proj)
+      rendRef.current?.loadData(json.data_b64 ?? json.texture_b64, { ...json.proj, product })
+      onProjLoad?.(json.proj)
     } catch (e) {
       if (e.name !== 'AbortError') console.error('RadarWebGL:', e.message)
     }

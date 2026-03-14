@@ -1,5 +1,5 @@
 // components/ProductPicker.jsx
-// Selektor produktu radarowego — tylko typy CMAX, CAPPI, PPI, EHT.
+// Selektor produktu radarowego — typy CMAX, CAPPI, CAPPI_V, PPI, EHT.
 // Pogrupowany po stacji radarowej.
 import styles from './ProductPicker.module.css'
 
@@ -18,90 +18,100 @@ const RADARS = [
     id:    'LEG',
     label: 'Legionowo',
     items: [
-      { key: 'LEG_PPI',   label: 'PPI',   desc: 'Skan 0.5°', units: 'dBZ' },
-      { key: 'LEG_CAPPI', label: 'CAPPI', desc: 'CAPPI',     units: 'dBZ' },
-      { key: 'LEG_EHT',   label: 'EHT',   desc: 'Wys. echa', units: 'km'  },
+      { key: 'LEG_PPI',     label: 'PPI',     desc: 'Skan 0.5°',     units: 'dBZ' },
+      { key: 'LEG_CAPPI',   label: 'CAPPI',   desc: 'CAPPI',         units: 'dBZ' },
+      { key: 'LEG_CAPPI_V', label: 'CAPPI-V', desc: 'Prędkość 1 km', units: 'm/s' },
+      { key: 'LEG_EHT',     label: 'EHT',     desc: 'Wys. echa',     units: 'km'  },
     ],
   },
   {
     id:    'BRZ',
     label: 'Brzuchania',
     items: [
-      { key: 'BRZ_PPI',   label: 'PPI',   desc: 'Skan 0.5°', units: 'dBZ' },
-      { key: 'BRZ_CAPPI', label: 'CAPPI', desc: 'CAPPI',     units: 'dBZ' },
-      { key: 'BRZ_EHT',   label: 'EHT',   desc: 'Wys. echa', units: 'km'  },
+      { key: 'BRZ_PPI',     label: 'PPI',     desc: 'Skan 0.5°',     units: 'dBZ' },
+      { key: 'BRZ_CAPPI',   label: 'CAPPI',   desc: 'CAPPI',         units: 'dBZ' },
+      { key: 'BRZ_CAPPI_V', label: 'CAPPI-V', desc: 'Prędkość 1 km', units: 'm/s' },
+      { key: 'BRZ_EHT',     label: 'EHT',     desc: 'Wys. echa',     units: 'km'  },
     ],
   },
   {
     id:    'GDY',
     label: 'Gdynia',
     items: [
-      { key: 'GDY_PPI',   label: 'PPI',   desc: 'Skan 0.5°', units: 'dBZ' },
-      { key: 'GDY_CAPPI', label: 'CAPPI', desc: 'CAPPI',     units: 'dBZ' },
-      { key: 'GDY_EHT',   label: 'EHT',   desc: 'Wys. echa', units: 'km'  },
+      { key: 'GDY_PPI',     label: 'PPI',     desc: 'Skan 0.5°',     units: 'dBZ' },
+      { key: 'GDY_CAPPI',   label: 'CAPPI',   desc: 'CAPPI',         units: 'dBZ' },
+      { key: 'GDY_CAPPI_V', label: 'CAPPI-V', desc: 'Prędkość 1 km', units: 'm/s' },
+      { key: 'GDY_EHT',     label: 'EHT',     desc: 'Wys. echa',     units: 'km'  },
     ],
   },
   {
     id:    'GSA',
     label: 'Góra Św. Anny',
     items: [
-      { key: 'GSA_PPI',   label: 'PPI',   desc: 'Skan 0.5°', units: 'dBZ' },
-      { key: 'GSA_CAPPI', label: 'CAPPI', desc: 'CAPPI',     units: 'dBZ' },
-      { key: 'GSA_EHT',   label: 'EHT',   desc: 'Wys. echa', units: 'km'  },
+      { key: 'GSA_PPI',     label: 'PPI',     desc: 'Skan 0.5°',     units: 'dBZ' },
+      { key: 'GSA_CAPPI',   label: 'CAPPI',   desc: 'CAPPI',         units: 'dBZ' },
+      { key: 'GSA_CAPPI_V', label: 'CAPPI-V', desc: 'Prędkość 1 km', units: 'm/s' },
+      { key: 'GSA_EHT',     label: 'EHT',     desc: 'Wys. echa',     units: 'km'  },
     ],
   },
   {
     id:    'PAS',
     label: 'Pastewnik',
     items: [
-      { key: 'PAS_PPI',   label: 'PPI',   desc: 'Skan 0.5°', units: 'dBZ' },
-      { key: 'PAS_CAPPI', label: 'CAPPI', desc: 'CAPPI',     units: 'dBZ' },
-      { key: 'PAS_EHT',   label: 'EHT',   desc: 'Wys. echa', units: 'km'  },
+      { key: 'PAS_PPI',     label: 'PPI',     desc: 'Skan 0.5°',     units: 'dBZ' },
+      { key: 'PAS_CAPPI',   label: 'CAPPI',   desc: 'CAPPI',         units: 'dBZ' },
+      { key: 'PAS_CAPPI_V', label: 'CAPPI-V', desc: 'Prędkość 1 km', units: 'm/s' },
+      { key: 'PAS_EHT',     label: 'EHT',     desc: 'Wys. echa',     units: 'km'  },
     ],
   },
   {
     id:    'POZ',
     label: 'Poznań',
     items: [
-      { key: 'POZ_PPI',   label: 'PPI',   desc: 'Skan 0.5°', units: 'dBZ' },
-      { key: 'POZ_CAPPI', label: 'CAPPI', desc: 'CAPPI',     units: 'dBZ' },
-      { key: 'POZ_EHT',   label: 'EHT',   desc: 'Wys. echa', units: 'km'  },
+      { key: 'POZ_PPI',     label: 'PPI',     desc: 'Skan 0.5°',     units: 'dBZ' },
+      { key: 'POZ_CAPPI',   label: 'CAPPI',   desc: 'CAPPI',         units: 'dBZ' },
+      { key: 'POZ_CAPPI_V', label: 'CAPPI-V', desc: 'Prędkość 1 km', units: 'm/s' },
+      { key: 'POZ_EHT',     label: 'EHT',     desc: 'Wys. echa',     units: 'km'  },
     ],
   },
   {
     id:    'RAM',
     label: 'Ramża',
     items: [
-      { key: 'RAM_PPI',   label: 'PPI',   desc: 'Skan 0.5°', units: 'dBZ' },
-      { key: 'RAM_CAPPI', label: 'CAPPI', desc: 'CAPPI',     units: 'dBZ' },
-      { key: 'RAM_EHT',   label: 'EHT',   desc: 'Wys. echa', units: 'km'  },
+      { key: 'RAM_PPI',     label: 'PPI',     desc: 'Skan 0.5°',     units: 'dBZ' },
+      { key: 'RAM_CAPPI',   label: 'CAPPI',   desc: 'CAPPI',         units: 'dBZ' },
+      { key: 'RAM_CAPPI_V', label: 'CAPPI-V', desc: 'Prędkość 1 km', units: 'm/s' },
+      { key: 'RAM_EHT',     label: 'EHT',     desc: 'Wys. echa',     units: 'km'  },
     ],
   },
   {
     id:    'RZE',
     label: 'Rzeszów',
     items: [
-      { key: 'RZE_PPI',   label: 'PPI',   desc: 'Skan 0.5°', units: 'dBZ' },
-      { key: 'RZE_CAPPI', label: 'CAPPI', desc: 'CAPPI',     units: 'dBZ' },
-      { key: 'RZE_EHT',   label: 'EHT',   desc: 'Wys. echa', units: 'km'  },
+      { key: 'RZE_PPI',     label: 'PPI',     desc: 'Skan 0.5°',     units: 'dBZ' },
+      { key: 'RZE_CAPPI',   label: 'CAPPI',   desc: 'CAPPI',         units: 'dBZ' },
+      { key: 'RZE_CAPPI_V', label: 'CAPPI-V', desc: 'Prędkość 1 km', units: 'm/s' },
+      { key: 'RZE_EHT',     label: 'EHT',     desc: 'Wys. echa',     units: 'km'  },
     ],
   },
   {
     id:    'SWI',
     label: 'Świdwin',
     items: [
-      { key: 'SWI_PPI',   label: 'PPI',   desc: 'Skan 0.5°', units: 'dBZ' },
-      { key: 'SWI_CAPPI', label: 'CAPPI', desc: 'CAPPI',     units: 'dBZ' },
-      { key: 'SWI_EHT',   label: 'EHT',   desc: 'Wys. echa', units: 'km'  },
+      { key: 'SWI_PPI',     label: 'PPI',     desc: 'Skan 0.5°',     units: 'dBZ' },
+      { key: 'SWI_CAPPI',   label: 'CAPPI',   desc: 'CAPPI',         units: 'dBZ' },
+      { key: 'SWI_CAPPI_V', label: 'CAPPI-V', desc: 'Prędkość 1 km', units: 'm/s' },
+      { key: 'SWI_EHT',     label: 'EHT',     desc: 'Wys. echa',     units: 'km'  },
     ],
   },
   {
     id:    'UZR',
     label: 'Użranki',
     items: [
-      { key: 'UZR_PPI',   label: 'PPI',   desc: 'Skan 0.5°', units: 'dBZ' },
-      { key: 'UZR_CAPPI', label: 'CAPPI', desc: 'CAPPI',     units: 'dBZ' },
-      { key: 'UZR_EHT',   label: 'EHT',   desc: 'Wys. echa', units: 'km'  },
+      { key: 'UZR_PPI',     label: 'PPI',     desc: 'Skan 0.5°',     units: 'dBZ' },
+      { key: 'UZR_CAPPI',   label: 'CAPPI',   desc: 'CAPPI',         units: 'dBZ' },
+      { key: 'UZR_CAPPI_V', label: 'CAPPI-V', desc: 'Prędkość 1 km', units: 'm/s' },
+      { key: 'UZR_EHT',     label: 'EHT',     desc: 'Wys. echa',     units: 'km'  },
     ],
   },
 ]

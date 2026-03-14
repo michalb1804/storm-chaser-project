@@ -11,7 +11,7 @@ function fmtScanTime(iso) {
   } catch { return iso }
 }
 
-export default function TopBar({ product, meta, loading }) {
+export default function TopBar({ product, meta, loading, noData }) {
   return (
     <div className={styles.topbar}>
       <div className={styles.left}>
@@ -22,6 +22,7 @@ export default function TopBar({ product, meta, loading }) {
 
       <div className={styles.right}>
         {loading && <span className={styles.spinner}>⟳</span>}
+        {(loading || noData) && <span className={styles.fetching}>Pobieranie…</span>}
         {meta?.val_max != null && (
           <span className={styles.stat}>
             MAX <span className={styles.statVal}>{meta.val_max.toFixed(1)}</span>

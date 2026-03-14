@@ -69,6 +69,36 @@
   background: rgba(0, 229, 160, 0.1);
 }
 
+/* Cell overlay toggle */
+.cellToggle {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 500;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  background: rgba(8, 12, 16, 0.82);
+  border: 1px solid rgba(80, 96, 112, 0.4);
+  border-radius: 4px;
+  padding: 5px 10px;
+  cursor: pointer;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  transition: border-color 0.15s;
+}
+.cellToggle:hover {
+  border-color: rgba(0, 229, 160, 0.5);
+}
+.cellToggleOn {
+  color: var(--accent);
+}
+.cellToggleOff {
+  color: var(--text-dim);
+  text-decoration: line-through;
+}
+
 /* Watermark */
 .watermark {
   position: absolute;

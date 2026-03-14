@@ -93,7 +93,7 @@ export function useRadarImage(product, refreshInterval = 60000) {
   return { imageUrl, meta, loading, error, lastUpdate, refresh }
 }
 
-export function usePointValue(product) {
+export function usePointValue(product, selectedTs) {
   const [value, setValue]     = useState(null)
   const [loading, setLoading] = useState(false)
 
@@ -101,8 +101,9 @@ export function usePointValue(product) {
     if (!product) return
     setLoading(true)
     try {
+      const qs = selectedTs ? `&scan_time=${encodeURIComponent(selectedTs)}` : ''
       const res = await fetch(
-        `${API}/api/radar/${product}/point?lat=${lat.toFixed(5)}&lon=${lon.toFixed(5)}`)
+        `${API}/api/radar/${product}/point?lat=${lat.toFixed(5)}&lon=${lon.toFixed(5)}${qs}`)
       if (!res.ok) throw new Error(`HTTP ${res.status}`)
       const data = await res.json()
       setValue({ ...data, lat, lon })
@@ -111,7 +112,7 @@ export function usePointValue(product) {
     } finally {
       setLoading(false)
     }
-  }, [product])
+  }, [product, selectedTs])
 
   const clear = useCallback(() => setValue(null), [])
   return { value, loading, query, clear }

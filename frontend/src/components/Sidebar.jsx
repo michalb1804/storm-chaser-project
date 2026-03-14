@@ -25,7 +25,7 @@ function formatScanTime(isoStr) {
 
 export default function Sidebar({
   product, onProductChange,
-  meta, loading, error, lastUpdate, onRefresh,
+  meta, loading, lastUpdate, onRefresh,
   pointValue,
 }) {
   const [pickerOpen, setPickerOpen] = useState(false)
@@ -83,9 +83,6 @@ export default function Sidebar({
           {loading ? 'ŁADOWANIE…' : '⟳ ODŚWIEŻ'}
         </button>
 
-        {error && (
-          <div className={styles.errorMsg}>{error}</div>
-        )}
       </section>
 
       {/* Wartość w punkcie */}

@@ -53,6 +53,7 @@ from imgw_cache import get_cache, CACHE_TTL_S
 from imgw_radar import PRODUCTS, query_point, latlon_to_pixel, nws_dbz_cmap, find_latest, make_url, make_timestamp, download_file
 from gfs_cache import get_gfs_cache
 from gfs_ingestor import PARAMS as GFS_PARAMS, PARAM_GROUPS as GFS_GROUPS, DERIVED_PARAMS as GFS_DERIVED
+from cell_tracker import build_cells_response
 
 log = logging.getLogger("api")
 
@@ -359,9 +360,10 @@ def radar_bounds(product: str):
 
 @app.get("/api/radar/{product}/point")
 def radar_point(
-    product: str,
-    lat: float = Query(..., description="Szerokość geograficzna", ge=40.0, le=65.0),
-    lon: float = Query(..., description="Długość geograficzna",   ge=5.0,  le=35.0),
+    product:   str,
+    lat:       float = Query(..., description="Szerokość geograficzna", ge=40.0, le=65.0),
+    lon:       float = Query(..., description="Długość geograficzna",   ge=5.0,  le=35.0),
+    scan_time: str   = Query(None),
 ):
     """
     Wartość radarowa (np. dBZ) dla podanego punktu lat/lon.
@@ -373,7 +375,7 @@ def radar_point(
         raise HTTPException(404, f"Nieznany produkt: {product}")
 
     cache  = get_cache()
-    result = cache.get(product)
+    result = cache.get_by_scan_time(product, scan_time) if scan_time else cache.get(product)
     if result is None:
         raise HTTPException(503, f"Nie udało się pobrać danych dla {product}")
 
@@ -400,6 +402,44 @@ def radar_point(
         "scan_time": result["scan_dt"].isoformat() if result["scan_dt"] else None,
         "cache_age_s": round(result["age_s"], 1),
     }
+
+
+@app.get("/api/radar/{product}/cells")
+def radar_cells(product: str):
+    """
+    Wykrywa komórki burzowe, śledzi ruch i zwraca prognozę wektora ruchu.
+
+    Przykład: /api/radar/COMPO_CMAX/cells
+    """
+    product = product.upper()
+    if product not in PRODUCTS:
+        raise HTTPException(404, f"Nieznany produkt: {product}")
+
+    cache      = get_cache()
+    result_now = cache.get(product)
+    if result_now is None:
+        raise HTTPException(503, f"Nie udało się pobrać danych dla {product}")
+
+    # Załaduj historię 5 skanów (do histogramu dBZ i śledzenia ruchu)
+    hist = cache.history(product, limit=5)
+    all_history = []
+    result_prev = None
+    for i, h in enumerate(hist):
+        r = cache.get_by_scan_time(product, h["scan_time"])
+        if r is None:
+            continue
+        all_history.append(r)
+        if i == 1 and result_prev is None:
+            result_prev = r
+
+    # Załaduj EHT dla wysokości wierzchołka echa
+    station = product.split('_')[0]  # np. COMPO, LEG, BRZ…
+    eht_product = f"{station}_EHT"
+    eht_result = None
+    if eht_product in PRODUCTS:
+        eht_result = cache.get(eht_product)
+
+    return build_cells_response(result_now, result_prev, all_history=all_history, eht_result=eht_result)
 
 
 @app.get("/api/radar/{product}")
